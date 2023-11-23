@@ -2,26 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: 'YourCustomFont';
+  src: url('/hello-headline.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: 'YourCustomFont';
+  background-image: url('/pattern.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 0% 100%;
+}
+
+
+
+.flip-card {
+  width: 200px;
+  height: 300px;
+  perspective: 1000px; /* Ajoute de la perspective à la carte */
+  text-decoration: none;
+  color: rgb(161 161 169);
+  border-radius: 8px;
+  position: relative;
+  /* hide gradient outside of link */
+  cursor: pointer;
+  transition: scale 0.15s;
+}
+
+.flip-card:hover {
+  scale: 1.05;
+}
+
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s; /* Animation de la transformation */
+  transform: rotateY(180deg); /* Fait pivoter la carte de 180 degrés au survol */
+
+  
+}
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(0);
+}
+
+.flip-card-front,
+.flip-card-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden; /* Cache le côté arrière pendant la rotation */
+}
+
+.flip-card-front {
+  color: white;
+  font-size: 42px;
+  border: 6px solid #5a5a87;
+}
+
+.flip-card-back {
+  font-size: 42px;
+  overflow: hidden;
+  color: white;
+  transform: rotateY(180deg); /* Initialement caché à l'arrière */
+  border: 12px solid #fff;
+}
+
+.flip-card-back::after {
+  --gradient-size: 250px;
+
+  content: "";
+  position: absolute;
+  /* substracting half the size to center gradient with cursor. */
+  top: calc(var(--y-cursor-position, 0) * 1px - var(--gradient-size) / 2);
+  left: calc(var(--x-cursor-position, 0) * 1px - var(--gradient-size) / 2);
+  height: var(--gradient-size);
+  width: var(--gradient-size);
+  background: radial-gradient(rgba(186, 230, 253, 0.25), #3984ff00 70%);
+  opacity: 0;
+  transition: opacity 700ms;
+}
+
+.flip-card-back:hover::after {
+  opacity: 0.7;
 }
